@@ -13,7 +13,7 @@ namespace TestDeploymentWebApi.Controllers
     {
         private static readonly string[] Summaries = new[]
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            "New Weather", "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
@@ -27,13 +27,16 @@ namespace TestDeploymentWebApi.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            List<WeatherForecast> weatherList = new List<WeatherForecast>();
+            for(int i=0; i<5; i++)
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+                var weather = new WeatherForecast();
+                weather.Date = DateTime.Now;
+                weather.TemperatureC = rng.Next(-20, 55);
+                weather.Summary = Summaries[i];
+                weatherList.Add(weather);
+            }
+            return weatherList;
         }
     }
 }
