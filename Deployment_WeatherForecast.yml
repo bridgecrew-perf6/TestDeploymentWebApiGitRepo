@@ -1,0 +1,34 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weatherforecast-deployment
+  labels:
+    app: WeatherForecast
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: WeatherForecast
+  template:
+    metadata:
+      labels:
+        app: WeatherForecast
+    spec:
+      containers:
+      - name: weatherforecast
+        image: WeatherForecastContainerRegistery.azurecr.io/weatherforecastserviceimage:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: weatherforecastsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weatherforecastservicesvc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: WeatherForecast
